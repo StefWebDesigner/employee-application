@@ -4,13 +4,16 @@ import com.stefan.employee_applcation.entities.CategoryType;
 import com.stefan.employee_applcation.entities.Product;
 import com.stefan.employee_applcation.repository.ProductRepository;
 import com.stefan.employee_applcation.requests.RegisterProductRequest;
+import com.stefan.employee_applcation.requests.UpdateProductRequest;
 import com.stefan.employee_applcation.responses.ProductResponse;
 import com.stefan.employee_applcation.responses.RegisterProductResponse;
 import com.stefan.employee_applcation.utility.ProductMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +38,28 @@ public class ProductService {
 
     public List<ProductResponse> fetchAllProducts() {
         List<Product> products = productRepository.findAll();
-        List<ProductResponse> allCurrentProducts = ProductMapper.productsToProductResponses(products);
+        List<ProductResponse> allCurrentProducts = ProductMapper.listProductsToProductResponses(products);
         return allCurrentProducts;
+    }
+
+    public ProductResponse updateProduct(@Valid UpdateProductRequest productRequest) {
+        Optional<Product> fetchedProduct = productRepository.findById(productRequest.getProductId());
+        if (fetchedProduct.isPresent()) {
+            Product modfiedProduct = Product.builder()
+                    .productId(productRequest.getProductId())
+                    .productName(productRequest.getProductName())
+                    .productDescription(productRequest.getProductDescription())
+                    .productPrice(productRequest.getProductPrice())
+                    .productCategory(productRequest.getProductCategory())
+                    .productQuantity(productRequest.getProductQuantity())
+                    .build();
+
+                    productRepository.save(modfiedProduct);
+
+                    ProductResponse convertedProduct = ProductMapper.productsToProductResponses(modfiedProduct);
+                    return convertedProduct;
+            } else {
+            return null;
+        }
     }
 }

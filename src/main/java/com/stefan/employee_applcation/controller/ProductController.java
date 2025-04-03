@@ -1,7 +1,9 @@
 package com.stefan.employee_applcation.controller;
 
+import com.stefan.employee_applcation.exceptions.NoProductFoundException;
 import com.stefan.employee_applcation.exceptions.ProductException;
 import com.stefan.employee_applcation.requests.RegisterProductRequest;
+import com.stefan.employee_applcation.requests.UpdateProductRequest;
 import com.stefan.employee_applcation.responses.ProductResponse;
 import com.stefan.employee_applcation.responses.RegisterProductResponse;
 import com.stefan.employee_applcation.service.ProductService;
@@ -40,9 +42,22 @@ public class ProductController {
         if (result != null) {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
-            throw new ProductException("No products available at this moment");
+            throw new NoProductFoundException("No products available at this moment");
         }
     }
+
+    @PutMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ProductResponse> updateProduct(@RequestBody @Valid UpdateProductRequest request) {
+        ProductResponse result = productService.updateProduct(request);
+        if (result != null) {
+            return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+        } else {
+            throw new ProductException("Check all fields. Bad Request when updating product");
+        }
+    }
+
+
 
 
 

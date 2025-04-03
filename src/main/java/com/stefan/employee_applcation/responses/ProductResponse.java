@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 @Builder
 public class ProductResponse {
-    private Integer productId;
-    private String productName;
-    private String productDescription;
-    private Double productPrice;
-    private Integer productQuantity;
-    private CategoryType productCategory;
+    public Integer productId;
+    public String productName;
+    public String productDescription;
+    public Double productPrice;
+    public Integer productQuantity;
+    public CategoryType productCategory;
 }
