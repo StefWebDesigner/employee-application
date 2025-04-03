@@ -4,6 +4,7 @@ import com.stefan.employee_applcation.exceptions.ProductException;
 import com.stefan.employee_applcation.requests.RegisterProductRequest;
 import com.stefan.employee_applcation.responses.RegisterProductResponse;
 import com.stefan.employee_applcation.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class ProductController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<RegisterProductResponse> createProduct(@RequestBody RegisterProductRequest  registerProductRequest) {
+    public ResponseEntity<RegisterProductResponse> createProduct(@RequestBody @Valid RegisterProductRequest  registerProductRequest) {
         RegisterProductResponse result = productService.createProduct(registerProductRequest);
         if (result != null) {
             return new ResponseEntity<>(result, HttpStatus.CREATED);
