@@ -4,10 +4,13 @@ import com.stefan.employee_applcation.entities.CategoryType;
 import com.stefan.employee_applcation.entities.Product;
 import com.stefan.employee_applcation.repository.ProductRepository;
 import com.stefan.employee_applcation.requests.RegisterProductRequest;
+import com.stefan.employee_applcation.responses.ProductResponse;
 import com.stefan.employee_applcation.responses.RegisterProductResponse;
 import com.stefan.employee_applcation.utility.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +33,9 @@ public class ProductService {
     }
 
 
-
+    public List<ProductResponse> fetchAllProducts() {
+        List<Product> products = productRepository.findAll();
+        List<ProductResponse> allCurrentProducts = ProductMapper.productsToProductResponses(products);
+        return allCurrentProducts;
+    }
 }
