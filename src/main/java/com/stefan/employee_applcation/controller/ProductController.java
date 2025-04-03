@@ -57,6 +57,17 @@ public class ProductController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ProductResponse> deleteProduct(@PathVariable Integer id) {
+        ProductResponse result = productService.deleteProduct(id);
+        if (result != null) {
+            return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+        } else {
+            throw new NoProductFoundException("Product Id not found.");
+        }
+    }
+
 
 
 

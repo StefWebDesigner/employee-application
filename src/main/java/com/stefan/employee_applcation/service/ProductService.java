@@ -62,4 +62,15 @@ public class ProductService {
             return null;
         }
     }
+
+    public ProductResponse deleteProduct(Integer id) {
+        Optional<Product> fetchedProduct = productRepository.findById(id);
+        if(fetchedProduct.isPresent()) {
+            productRepository.deleteById(id);
+            ProductResponse deletedProduct = ProductMapper.productsToProductResponses(fetchedProduct.get());
+            return deletedProduct;
+        } else {
+            return null;
+        }
+    }
 }
